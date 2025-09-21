@@ -109,15 +109,31 @@ app.post('/signup', (req, res) => {
     return res.status(400).json({ success:false, message:'Please fill all fields' });
   }
 
-  // ✅ FIXED regex
-  const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
-  if (!pwRegex.test(password)) {
-    return res.status(400).json({
-      success: false,
-      message: 'Password must be ≥8 chars, include upper, lower, number & special char'
-    });
-  }
+  // const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+  // if (!pwRegex.test(password)) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: 'Password must be ≥8 chars, include upper, lower, number & special char'
+  //   });
+  // }
+
+  // Trim whitespace from password
+const trimmedPassword = password.trim();
+
+// Regex for password: min 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
+const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+if (!pwRegex.test(trimmedPassword)) {
+  return res.status(400).json({
+    success: false,
+    message: 'Password must be ≥8 chars, include upper, lower, number & special char'
+  });
+}
+
+
+
 
   db.query('SELECT 1 FROM users WHERE email = ?', [email], (e, results) => {
     if (e) return res.status(500).json({ success:false, message:'Database error' });
@@ -197,31 +213,31 @@ app.delete('/users/:id', (req, res) => {
 //     res.status(201).json({ message: 'User details added successfully', insertedId: result.insertId });
 //   });
 // });
-app.post('/api/user-details', (req, res) => {
-  const { user_id, height, weight, target_weight, bmi, status } = req.body;
+// app.post('/api/user-details', (req, res) => {
+//   const { user_id, height, weight, target_weight, bmi, status } = req.body;
 
-  const sql = `INSERT INTO user_details (user_id, height, weight, target_weight, bmi, status) 
-               VALUES (?, ?, ?, ?, ?, ?)`;
+//   const sql = `INSERT INTO user_details (user_id, height, weight, target_weight, bmi, status) 
+//                VALUES (?, ?, ?, ?, ?, ?)`;
 
-  db.query(sql, [user_id, height, weight, target_weight, bmi, status], (err, result) => {
-    if (err) {
-      console.error('Database error:', err);  // Log error for debugging
-      return res.status(500).json({ message: 'Database error', error: err });
-    }
-    res.status(201).json({ message: 'User details added successfully', insertedId: result.insertId });
-  });
-});
+//   db.query(sql, [user_id, height, weight, target_weight, bmi, status], (err, result) => {
+//     if (err) {
+//       console.error('Database error:', err);  // Log error for debugging
+//       return res.status(500).json({ message: 'Database error', error: err });
+//     }
+//     res.status(201).json({ message: 'User details added successfully', insertedId: result.insertId });
+//   });
+// });
 
 
-app.get('/api/user-details', (req, res) => {
-  db.query('SELECT * FROM user_details', (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ message: 'Database error', error: err });
-    }
-    res.json(results);
-  });
-});
+// app.get('/api/user-details', (req, res) => {
+//   db.query('SELECT * FROM user_details', (err, results) => {
+//     if (err) {
+//       console.error('Database error:', err);
+//       return res.status(500).json({ message: 'Database error', error: err });
+//     }
+//     res.json(results);
+//   });
+// });
 
 
 // ==================== WORKOUT ROUTES ====================

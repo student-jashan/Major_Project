@@ -378,11 +378,6 @@
 
 
 
-
-
-
-
-
 // Function to Show Sections Dynamically
 function showSection(sectionId) {
   let sections = document.querySelectorAll(".section");
@@ -464,45 +459,45 @@ function addToProfilesTable(height, weight, targetWeight, bmi, status) {
     tableBody.appendChild(newRow);
   }
   
-function sendDataToServer(user_id, height, weight, targetWeight, bmi, status) {
-    fetch('/api/user-details', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id,
-        height,
-        weight,
-        target_weight: targetWeight, // ✅ use backend's expected key
-        bmi,
-        status
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        alert('Profile saved successfully!');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        alert('Failed to save profile.');
-      });
-  }
+// function sendDataToServer(user_id, height, weight, targetWeight, bmi, status) {
+//     fetch('/api/user-details', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({
+//         user_id,
+//         height,
+//         weight,
+//         target_weight: targetWeight, // ✅ use backend's expected key
+//         bmi,
+//         status
+//       })
+//     })
+//       .then(response => response.json())
+//       .then(data => {
+//         console.log('Success:', data);
+//         alert('Profile saved successfully!');
+//       })
+//       .catch((error) => {
+//         console.error('Error:', error);
+//         alert('Failed to save profile.');
+//       });
+//   }
 
 
-window.addEventListener("DOMContentLoaded", () => {
-    fetch('/api/user-details')
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(user => {
-          addToProfilesTable(user.height, user.weight, user.target_weight, user.bmi, user.status);
-        });
-      })
-      .catch(error => {
-        console.error("Error fetching profiles:", error);
-      });
-  });
+// window.addEventListener("DOMContentLoaded", () => {
+//     fetch('/api/user-details')
+//       .then(response => response.json())
+//       .then(data => {
+//         data.forEach(user => {
+//           addToProfilesTable(user.height, user.weight, user.target_weight, user.bmi, user.status);
+//         });
+//       })
+//       .catch(error => {
+//         console.error("Error fetching profiles:", error);
+//       });
+//   });
   
 
 
@@ -914,3 +909,4 @@ setInterval(() => {
 
 
 document.addEventListener("DOMContentLoaded", loadCourses);
+

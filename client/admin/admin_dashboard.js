@@ -580,13 +580,6 @@ courseContainer.addEventListener('click', (e) => {
   }
 });
 
-
-
-
-
-
-
-
 // Initial Load
 loadUsers();
 loadWorkouts();

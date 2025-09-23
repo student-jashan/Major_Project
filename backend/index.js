@@ -69,19 +69,49 @@ app.get('/', (req, res) => {
 //   });
 // });
 // ==================== EMAIL SETUP (Mailtrap) ====================
+// const transporter = nodemailer.createTransport({
+//   host: "sandbox.smtp.mailtrap.io",
+//   port: 2525,
+//   auth: {
+//     user: "c1f6d86dfb806e",   // 👉 your Mailtrap username
+//     pass: "239a25087afee5" // 👉 your Mailtrap password
+//   }
+// });
+
+// // Function to send mail
+// function sendEmail(to, subject, message) {
+//   const mailOptions = {
+//     from: "Fitness Freak <no-reply@fitnessfreak.com>",
+//     to,
+//     subject,
+//     text: message
+//   };
+
+//   transporter.sendMail(mailOptions, (err, info) => {
+//     if (err) {
+//       console.error("❌ Email failed:", err);
+//     } else {
+//       console.log("✅ Email sent:", info.response);
+//     }
+//   });
+// }
+
+
+// ==================== EMAIL SETUP (Gmail SMTP) ====================
+
+
 const transporter = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
-  port: 2525,
+  service: "gmail",
   auth: {
-    user: "c1f6d86dfb806e",   // 👉 your Mailtrap username
-    pass: "239a25087afee5" // 👉 your Mailtrap password
+    user: "jashn496767@gmail.com",        // 👉 your Gmail address
+    pass: "nfct gyfh lmqs uqel"           // 👉 the Gmail App Password you generated
   }
 });
 
 // Function to send mail
 function sendEmail(to, subject, message) {
   const mailOptions = {
-    from: "Fitness Freak <no-reply@fitnessfreak.com>",
+    from: "Fitness Freak <jashn496767@gmail.com>",  // must match Gmail user
     to,
     subject,
     text: message
@@ -96,12 +126,12 @@ function sendEmail(to, subject, message) {
   });
 }
 
+
 // Serve frontend
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-// ==================== AUTH ====================
 // ==================== AUTH ====================
 app.post('/signup', (req, res) => {
   const { name, age, gender, email, password } = req.body;
@@ -110,19 +140,10 @@ app.post('/signup', (req, res) => {
   }
 
 
-  // const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
-  // if (!pwRegex.test(password)) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: 'Password must be ≥8 chars, include upper, lower, number & special char'
-  //   });
-  // }
-
-  // Trim whitespace from password
 const trimmedPassword = password.trim();
 
-// Regex for password: min 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
+
 const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 if (!pwRegex.test(trimmedPassword)) {
@@ -132,28 +153,46 @@ if (!pwRegex.test(trimmedPassword)) {
   });
 }
 
-
-
-
-  db.query('SELECT 1 FROM users WHERE email = ?', [email], (e, results) => {
-    if (e) return res.status(500).json({ success:false, message:'Database error' });
-    if (results.length) {
-      return res.status(409).json({ success:false, message:'Email already registered' });
-    }
-    db.query(
-      'INSERT INTO users (name, age, gender, email, password, role) VALUES (?, ?, ?, ?, ?, "user")',
-      [name, age, gender, email, password],
-      err2 => {
-        if (err2) return res.status(500).json({ success:false, message:'Signup failed' });
+// db.query('SELECT 1 FROM users WHERE email = ?', [email], (e, results) => {
+//     if (e) return res.status(500).json({ success:false, message:'Database error' });
+//     if (results.length) {
+//       return res.status(409).json({ success:false, message:'Email already registered' });
+//     }
+//     db.query(
+//       'INSERT INTO users (name, age, gender, email, password, role) VALUES (?, ?, ?, ?, ?, "user")',
+//       [name, age, gender, email, password],
+//       err2 => {
+//         if (err2) return res.status(500).json({ success:false, message:'Signup failed' });
         
-        // ✅ Send Welcome Email (via Mailtrap)
-        sendEmail(email, "Welcome to Fitness Freak 🎉", 
-          `Hi ${name},\n\nWelcome to Fitness Freak! We are excited to help you on your fitness journey.\n\nStay fit,\nTeam Fitness Freak`);
+//         // ✅ Send Welcome Email (via Mailtrap)
+//         sendEmail(email, "Welcome to Fitness Freak 🎉", 
+//           `Hi ${name},\n\nWelcome to Fitness Freak! We are excited to help you on your fitness journey.\n\nStay fit,\nTeam Fitness Freak`);
 
-        res.status(201).json({ success:true, message:'Signup successful. Welcome email sent!' });
-      }
-    );
-  });
+//         res.status(201).json({ success:true, message:'Signup successful. Welcome email sent!' });
+//       }
+//     );
+//   });
+
+db.query('SELECT 1 FROM users WHERE email = ?', [email], (e, results) => {
+  if (e) return res.status(500).json({ success:false, message:'Database error' });
+  if (results.length) {
+    return res.status(409).json({ success:false, message:'Email already registered' });
+  }
+  db.query(
+    'INSERT INTO users (name, age, gender, email, password, role) VALUES (?, ?, ?, ?, ?, "user")',
+    [name, age, gender, email, password],
+    err2 => {
+      if (err2) return res.status(500).json({ success:false, message:'Signup failed' });
+      
+      // ✅ Send Welcome Email to the registered Gmail
+      sendEmail(email, "Welcome to Fitness Freak 🎉", 
+        `Hi ${name},\n\nWelcome to Fitness Freak! We are excited to help you on your fitness journey.\n\nStay fit,\nTeam Fitness Freak`);
+
+      res.status(201).json({ success:true, message:'Signup successful. Welcome email sent!' });
+    }
+  );
+});
+
 });
 
 

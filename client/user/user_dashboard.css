@@ -530,7 +530,6 @@ button[disabled] {
   cursor: pointer;
   transition: background 0.3s;
 }
-
 .progress-btn:hover {
   background: deepskyblue;
 }

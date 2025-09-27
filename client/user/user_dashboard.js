@@ -1,10 +1,20 @@
-// Function to Show Sections Dynamically
+
 function showSection(sectionId) {
   let sections = document.querySelectorAll(".section");
   sections.forEach(section => section.style.display = "none");
 
   document.getElementById(sectionId).style.display = "block";
 }
+
+
+// document.getElementById('logoutBtn').addEventListener('click', function() {
+//     // Clear any user session (optional, if stored in localStorage/sessionStorage)
+//     localStorage.removeItem('userId');
+//     localStorage.removeItem('userRole');
+
+//     // Redirect to original dashboard or login page
+//     window.location.href = 'http://localhost:5000/';  // replace with your original dashboard URL
+// });
 
 // // ================= BMI CALCULATION =================
 function calculateBMI() {
@@ -78,47 +88,6 @@ function addToProfilesTable(height, weight, targetWeight, bmi, status) {
   
     tableBody.appendChild(newRow);
   }
-  
-// function sendDataToServer(user_id, height, weight, targetWeight, bmi, status) {
-//     fetch('/api/user-details', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify({
-//         user_id,
-//         height,
-//         weight,
-//         target_weight: targetWeight, // ✅ use backend's expected key
-//         bmi,
-//         status
-//       })
-//     })
-//       .then(response => response.json())
-//       .then(data => {
-//         console.log('Success:', data);
-//         alert('Profile saved successfully!');
-//       })
-//       .catch((error) => {
-//         console.error('Error:', error);
-//         alert('Failed to save profile.');
-//       });
-//   }
-
-
-// window.addEventListener("DOMContentLoaded", () => {
-//     fetch('/api/user-details')
-//       .then(response => response.json())
-//       .then(data => {
-//         data.forEach(user => {
-//           addToProfilesTable(user.height, user.weight, user.target_weight, user.bmi, user.status);
-//         });
-//       })
-//       .catch(error => {
-//         console.error("Error fetching profiles:", error);
-//       });
-//   });
-  
 
 
 function showWeightGainWorkouts() {
@@ -202,56 +171,147 @@ function showSection(sectionId) {
   document.getElementById(sectionId).style.display = "block";
 }
 
-function updateNutritionPlan() {
-  let bmi = parseFloat(document.getElementById("bmiResult").innerText);
-  let nutritionDetails = document.getElementById("nutritionDetails");
+// function updateNutritionPlan() {
+//   let bmi = parseFloat(document.getElementById("bmiResult").innerText);
+//   let nutritionDetails = document.getElementById("nutritionDetails");
 
-  if (!bmi) {
-      nutritionDetails.innerHTML = `<p>Please calculate your BMI first.</p>`;
-      return;
-  }
+//   if (!bmi) {
+//       nutritionDetails.innerHTML = `<p>Please calculate your BMI first.</p>`;
+//       return;
+//   }
 
-  let planTitle = "";
-  let mealPlans = [];
+//   let planTitle = "";
+//   let mealPlans = [];
 
-  // Determine the meal plan based on the BMI value
-  if (bmi < 18.5) {
-      planTitle = "Weight Gain Meal Plan";
-      mealPlans = [
-          { food: "Oatmeal with peanut butter & banana", calories: "450 kcal", image: "../Images/peanut.jpg" },
-          { food: "Nuts & Greek yogurt", calories: "300 kcal", image: "../Images/yogrt.jpg" }
-      ];
-  }
-  else if (bmi < 24.9) {
-      planTitle = "Balanced Nutrition Meal Plan";
-      mealPlans = [
-          { food: "Scrambled eggs with whole-grain toast", calories: "350 kcal", image: "../Images/egg.jpg" },
-          { food: "Hummus & veggie sticks", calories: "250 kcal", image: "../Images/vegstcik.jpg" }
-      ];
-  } else {
-      planTitle = "Weight Loss Meal Plan";
-      mealPlans = [
-          { food: "Smoothie with spinach, banana & almond milk", calories: "300 kcal", image: "../Images/ALmond.jpg" },
-          { food: "Grilled chicken salad with olive oil dressing", calories: "400 kcal", image: "../Images/Grilled.jpg" }
-      ];
-  }
+//   // Determine the meal plan based on the BMI value
+//   if (bmi < 18.5) {
+//       planTitle = "Weight Gain Meal Plan";
+//       mealPlans = [
+//           { food: "Oatmeal with peanut butter & banana", calories: "450 kcal", image: "../Images/peanut.jpg" },
+//           { food: "Nuts & Greek yogurt", calories: "300 kcal", image: "../Images/yogrt.jpg" }
+//       ];
+//   }
+//   else if (bmi < 24.9) {
+//       planTitle = "Balanced Nutrition Meal Plan";
+//       mealPlans = [
+//           { food: "Scrambled eggs with whole-grain toast", calories: "350 kcal", image: "../Images/egg.jpg" },
+//           { food: "Hummus & veggie sticks", calories: "250 kcal", image: "../Images/vegstcik.jpg" }
+//       ];
+//   } else {
+//       planTitle = "Weight Loss Meal Plan";
+//       mealPlans = [
+//           { food: "Smoothie with spinach, banana & almond milk", calories: "300 kcal", image: "../Images/ALmond.jpg" },
+//           { food: "Grilled chicken salad with olive oil dressing", calories: "400 kcal", image: "../Images/Grilled.jpg" }
+//       ];
+//   }
 
-  // Generate HTML for the meal plans
-  let mealPlanHTML = `<h3>${planTitle}</h3><div class="meal-plan-container">`;
+//   // Generate HTML for the meal plans
+//   let mealPlanHTML = `<h3>${planTitle}</h3><div class="meal-plan-container">`;
 
-  mealPlans.forEach(meal => {
-      mealPlanHTML += `
-          <div class="meal-card">
-              <img src="${meal.image}" alt="${meal.food}" class="meal-image">
-              <p class="meal-name">${meal.food}</p>
-              <p class="meal-calories">Calories: ${meal.calories}</p>
-          </div>
-      `;
-  });
+//   mealPlans.forEach(meal => {
+//       mealPlanHTML += `
+//           <div class="meal-card">
+//               <img src="${meal.image}" alt="${meal.food}" class="meal-image">
+//               <p class="meal-name">${meal.food}</p>
+//               <p class="meal-calories">Calories: ${meal.calories}</p>
+//           </div>
+//       `;
+//   });
 
-  mealPlanHTML += `</div>`;
-  nutritionDetails.innerHTML = mealPlanHTML;
+//   mealPlanHTML += `</div>`;
+//   nutritionDetails.innerHTML = mealPlanHTML;
+// }
+
+
+
+
+// Function to get BMI category
+function getBMICategory(bmi) {
+    if (bmi < 18.5) return "Underweight";
+    if (bmi >= 18.5 && bmi < 25) return "Normal";
+    return "Overweight";
 }
+
+
+async function updateNutritionPlan() {
+    const userBmiCategory = localStorage.getItem("bmiCategory") || "Normal";
+    const type = document.getElementById("typeSelect").value;
+    const container = document.getElementById("nutritionDetails");
+
+    container.innerHTML = "<p>Loading your personalized plan...</p>";
+
+    try {
+       const res = await fetch(`http://localhost:5000/nutrition-plan?bmi_category=${userBmiCategory}&type=${type}`);
+
+        const data = await res.json();
+
+        if (!data.success || !data.plan || data.plan.length === 0) {
+            container.innerHTML = "<p>No nutrition plan found.</p>";
+            return;
+        }
+
+        container.innerHTML = ""; // clear old
+
+        // Group meals by day
+        const days = {};
+        data.plan.forEach(meal => {
+            if (!days[meal.day]) days[meal.day] = [];
+            days[meal.day].push(meal);
+        });
+
+        // Create table
+        const table = document.createElement("table");
+        table.className = "nutrition-table";
+
+        // Header
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        ["Day", "Meal", "Description"].forEach(text => {
+            const th = document.createElement("th");
+            th.innerText = text;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Body
+        const tbody = document.createElement("tbody");
+        Object.keys(days).forEach(dayNum => {
+            const dayMeals = days[dayNum];
+
+            const tr = document.createElement("tr");
+
+            // Day column
+            const tdDay = document.createElement("td");
+            tdDay.innerText = dayNum;
+            tr.appendChild(tdDay);
+
+            // Meal column
+            const tdMeal = document.createElement("td");
+            tdMeal.innerText = dayMeals.map(m => m.meal_category).join(", ");
+            tr.appendChild(tdMeal);
+
+            // Description column
+            const tdDesc = document.createElement("td");
+            tdDesc.innerText = dayMeals.map(m => m.meal_description).join(" | ");
+            tr.appendChild(tdDesc);
+
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        container.appendChild(table);
+
+    } catch (err) {
+        console.error("Error fetching nutrition plan:", err);
+        container.innerHTML = "<p>Error loading plan. Try again later.</p>";
+    }
+}
+
+
+
+
+
 function showSection(sectionId) {
   const sections = document.querySelectorAll(".section");
   sections.forEach(section => section.style.display = "none");
@@ -259,6 +319,12 @@ function showSection(sectionId) {
 }
 function openForm(title, content) {
   alert(title + "\n\n" + content);}
+
+
+
+
+
+
 
 // ==================== LOAD COURSES ====================
 async function loadCourses() {
@@ -525,7 +591,23 @@ setInterval(() => {
     }).then(res => res.json())
       .then(data => console.log('Progress saved:', data))
       .catch(err => console.error('Error saving progress:', err));
-}, 5000);
+}, 2000);
 
 
 document.addEventListener("DOMContentLoaded", loadCourses);
+
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.querySelector('.logout-btn'); // select by class
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            // Clear user session
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
+
+            // Redirect to login page
+            window.location.href = 'http://localhost:5000/';
+        });
+    } else {
+        console.error("Logout button not found!");
+    }
+});

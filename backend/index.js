@@ -103,15 +103,15 @@ app.get('/', (req, res) => {
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "jashn496767@gmail.com",        // 👉 your Gmail address
-    pass: "nfct gyfh lmqs uqel"           // 👉 the Gmail App Password you generated
+    user: "jashn496767@gmail.com",        
+    pass: "nfct gyfh lmqs uqel"           
   }
 });
 
-// Function to send mail
+
 function sendEmail(to, subject, message) {
   const mailOptions = {
-    from: "Fitness Freak <jashn496767@gmail.com>",  // must match Gmail user
+    from: "Fitness Freak <jashn496767@gmail.com>",  
     to,
     subject,
     text: message
@@ -127,7 +127,6 @@ function sendEmail(to, subject, message) {
 }
 
 
-// Serve frontend
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
@@ -196,8 +195,6 @@ db.query('SELECT 1 FROM users WHERE email = ?', [email], (e, results) => {
 });
 
 
-
-// Login
 app.post('/login', (req, res) => {
   const { email, password, role } = req.body;
   if (!email || !password || !role) {
@@ -218,7 +215,7 @@ app.post('/login', (req, res) => {
 
 // ==================== USER ROUTES ====================
 
-// Get All Users
+
 app.get('/users', (req, res) => {
   db.query('SELECT id, name, gender, age, email FROM users', (err, results) => {
     if (err) return res.status(500).json({ success: false, message: 'Failed to fetch users' });
@@ -226,7 +223,6 @@ app.get('/users', (req, res) => {
   });
 });
 
-// Delete User
 app.delete('/users/:id', (req, res) => {
   const userId = req.params.id;
   db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
@@ -294,7 +290,7 @@ app.post('/workouts', (req, res) => {
   });
 });
 
-// Get Workouts
+
 app.get('/workouts', (req, res) => {
   db.query('SELECT * FROM workouts', (err, results) => {
     if (err) return res.status(500).json({ success: false, message: 'Failed to fetch workouts' });
@@ -302,7 +298,7 @@ app.get('/workouts', (req, res) => {
   });
 });
 
-// Delete Workout
+
 app.delete('/workouts/:id', (req, res) => {
   const workoutId = req.params.id;
   db.query('DELETE FROM workouts WHERE id = ?', [workoutId], (err) => {
@@ -313,20 +309,62 @@ app.delete('/workouts/:id', (req, res) => {
 
 // ==================== NUTRITION ROUTES ====================
 
-// Add Nutrition Plan
-app.post('/nutrition', (req, res) => {
-  const { title, image_url } = req.body;
-  if (!title || !image_url) {
-    return res.status(400).json({ success: false, message: 'Missing fields' });
-  }
-  const sql = 'INSERT INTO nutrition_plans (title, image_url) VALUES (?, ?)';
-  db.query(sql, [title, image_url], (err) => {
-    if (err) return res.status(500).json({ success: false, message: 'Failed to add nutrition plan' });
-    res.status(201).json({ success: true, message: 'Nutrition plan added successfully' });
-  });
+
+// app.post('/nutrition', (req, res) => {
+//   const { title, image_url } = req.body;
+//   if (!title || !image_url) {
+//     return res.status(400).json({ success: false, message: 'Missing fields' });
+//   }
+//   const sql = 'INSERT INTO nutrition_plans (title, image_url) VALUES (?, ?)';
+//   db.query(sql, [title, image_url], (err) => {
+//     if (err) return res.status(500).json({ success: false, message: 'Failed to add nutrition plan' });
+//     res.status(201).json({ success: true, message: 'Nutrition plan added successfully' });
+//   });
+// });
+
+
+// app.post('/nutrition-plan', (req, res) => {
+//     const { bmiStatus, dietType, goal } = req.body;
+
+//     const sql = `
+//         SELECT * FROM nutrition_plan 
+//         WHERE bmi_category=? AND diet_type=? AND goal=? LIMIT 1
+//     `;
+
+//     db.query(sql, [bmiStatus, dietType, goal], (err, results) => {
+//         if (err) return res.json({ success: false, message: 'Database error' });
+//         if (results.length === 0) return res.json({ success: false, message: 'No matching nutrition plan found' });
+//         const plan = results[0];
+
+//         // Get meals for this plan
+//         db.query('SELECT * FROM meals WHERE plan_id=?', [plan.plan_id], (err2, meals) => {
+//             if (err2) return res.json({ success: false, message: 'Database error' });
+//             res.json({ success: true, plan, meals });
+//         });
+//     });
+// });
+
+
+
+// Get nutrition plan based on BMI and type (Veg/Non-Veg)
+app.get('/nutrition-plan', (req, res) => {
+    const { bmi_category, type } = req.query;
+
+    const sql = `
+        SELECT day, meal_category, meal_description
+        FROM nutrition_plan
+        WHERE bmi_category = ? AND type = ?
+        ORDER BY day, FIELD(meal_category, 'Breakfast','Lunch','Dinner')
+    `;
+
+    db.query(sql, [bmi_category, type], (err, results) => {
+        if (err) return res.status(500).json({ success: false, error: err });
+        res.json({ success: true, plan: results });
+    });
 });
 
-// Get Nutrition Plans
+
+
 app.get('/nutrition', (req, res) => {
   db.query('SELECT * FROM nutrition_plans', (err, results) => {
     if (err) return res.status(500).json({ success: false, message: 'Failed to fetch nutrition plans' });
@@ -334,7 +372,7 @@ app.get('/nutrition', (req, res) => {
   });
 });
 
-// Delete Nutrition Plan
+
 app.delete('/nutrition/:id', (req, res) => {
   const nutritionId = req.params.id;
   db.query('DELETE FROM nutrition_plans WHERE id = ?', [nutritionId], (err) => {
@@ -349,7 +387,6 @@ app.delete('/nutrition/:id', (req, res) => {
 // // ==================== BLOGS ====================
 app.post('/blogs', (req, res) => {
   const { title,description, image_url } = req.body;
-  // Insert into database
   db.query('INSERT INTO blogs (title, description, image_url) VALUES (?, ?, ?)', 
     [title, description, image_url], 
     (err, result) => {
@@ -373,6 +410,8 @@ app.delete('/blogs/:id', (req, res) => {
   });
 });
 
+
+
 // ==================== COURSE ROUTES ====================
 
 // Add a course
@@ -382,25 +421,25 @@ app.post('/course', (req, res) => {
     return res.json({ success: false, message: 'All fields are required!' });
   }
 
-  db.query(
-    'INSERT INTO Course (title, description, video_url, bmi_category) VALUES (?, ?, ?, ?)',
-    [title, description, video_url, bmi_category],
-    (err, result) => {
+ db.query(
+  'INSERT INTO courses (title, description, video_url, bmi_category) VALUES (?, ?, ?, ?)',
+  [title, description, video_url, bmi_category],
+  (err, result) => {
       if (err) return res.json({ success: false, message: err.message });
       res.json({ success: true, message: 'Course added successfully', course_id: result.insertId });
-    }
-  );
+  }
+);
 });
 
-app.get('/course', (req, res) => {
-  db.query('SELECT * FROM course', (err, results) => {
-    if (err) {
-      console.error("❌ Error fetching courses:", err);
-      return res.status(500).json({ success: false, message: 'Failed to fetch courses' });
-    }
-    res.json({ success: true, courses: results });
-  });
+
+app.get("/course", (req, res) => {
+    db.query("SELECT * FROM courses", (err, results) => {  
+        if(err) return res.json({ success: false, message: err });
+        res.json({ success: true, courses: results });
+    });
 });
+
+
 
 
 app.delete('/course/:id', (req, res) => {

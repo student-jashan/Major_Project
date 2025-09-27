@@ -6,7 +6,7 @@
     <title>User Dashboard</title>
     <link rel="stylesheet" href="user_dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- <script src="user_dashboard.js" defer></script> -->
+    
 </head>
 <body>
     
@@ -14,14 +14,12 @@
         <p>👋 WELCOME TO USER DASHBOARD</p>
     </div>
 
-    <!-- Hamburger Menu Checkbox -->
     <input type="checkbox" id="check">
     <label for="check" class="menu-btn">
         <i class="fas fa-bars" id="btn"></i>
         <i class="fas fa-times" id="cancel"></i>
     </label>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <h2><i class="fa-solid fa-user" style="margin-right: 8px;"></i>Hello, User</h2>
 
@@ -31,11 +29,11 @@
             <li onclick="showSection('nutrition')"><i class="fa-solid fa-apple-alt"></i> Nutrition</li>
             <li onclick="showSection('blog-section')"><i class="fa-solid fa-newspaper"></i> Blogs</li>
             <li onclick="showSection('courses')"><i class="fa-solid fa-newspaper"></i>Courses</li>
+            <li><button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></li>
         </ul>
     </div>  
    
 
-    <!-- Main Content -->
     <div class="main-content">
         <!-- Profile Section -->
         <!-- <div id="profile" class="section">
@@ -95,21 +93,45 @@
         
     </div>
 
-    <!-- Workout Section -->
 <div id="workout" class="section" style="display: none;">
     <h2 id="new">Workouts</h2>
 </div>
 
- <!-- Nutrition Section -->
+<!-- 
  <div id="nutrition" class="section" style="display: none;">
     <h2 id="new">Nutrition Plan</h2>
     <p>Select a nutrition plan based on your BMI.</p>
     <button onclick="updateNutritionPlan()">Get Your Plan</button>
     <div id="nutritionDetails"></div>
+</div> -->
+
+<div id="nutrition" class="section" style="display: none;">
+    <h2 id="new">Nutrition Plan</h2>
+    <p>Select a nutrition plan based on your BMI.</p>
+
+    <!-- Filter for Veg / Non-Veg -->
+    <div class="filters">
+        <label for="typeSelect">Choose Type: </label>
+        <select id="typeSelect">
+            <option value="Veg">Veg</option>
+            <option value="Non-Veg">Non-Veg</option>
+        </select>
+    </div>
+
+    <button onclick="updateNutritionPlan()">Meal Plan</button>
+
+    <!-- Container for Nutrition Details -->
+    <div id="nutritionDetails" class="plan-container"></div>
 </div>
 
 
-<!-- BLOGS -->
+
+
+
+
+
+
+
 <section class="section" id="blog-section" style="display: none;">
     <div class="row2">
       <div class="col2">
@@ -227,62 +249,21 @@ Joining a gym can create a lifestyle that works for you—making your needs a pr
 
 </section>
 
-<!-- 🔥 Courses Section
-<div id="courses" class="section" style="display: none;">
-  <h2 class="section-title">Recommended Courses</h2>
-  <div class="courses-row">
 
-    
-    <div class="course-card">
-      <iframe class="course-video" src="https://www.youtube.com/embed/UBMk30rjy0o"
-              frameborder="0" allowfullscreen></iframe>
-      <div class="card-body">
-        <h5 class="course-title">Weight Loss Beginner Course</h5>
-        <p class="course-text">A step-by-step guide for beginners to start losing weight safely and effectively.</p>
-        <div class="progress-label">Progress:</div>
-        <div class="progress-bar">
-          <div class="progress-fill green" style="width: 40%;">40%</div>
-        </div>
-        <button class="btn-complete">Mark Complete</button>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <iframe class="course-video" src="https://www.youtube.com/embed/2tM1LFFxeKg"
-              frameborder="0" allowfullscreen></iframe>
-      <div class="card-body">
-        <h5 class="course-title">Muscle Gain Training</h5>
-        <p class="course-text">Learn hypertrophy-focused workouts and nutrition to build lean muscle mass.</p>
-        <div class="progress-label">Progress:</div>
-        <div class="progress-bar">
-          <div class="progress-fill yellow" style="width: 60%;">60%</div>
-        </div>
-        <button class="btn-complete">Mark Complete</button>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <iframe class="course-video" src="https://www.youtube.com/embed/ml6cT4AZdqI"
-              frameborder="0" allowfullscreen></iframe>
-      <div class="card-body">
-        <h5 class="course-title">Full Body Home Workout</h5>
-        <p class="course-text">No equipment needed! Get fit at home with this effective full-body training program.</p>
-        <div class="progress-label">Progress:</div>
-        <div class="progress-bar">
-          <div class="progress-fill red" style="width: 20%;">20%</div>
-        </div>
-        <button class="btn-complete">Mark Complete</button>
-      </div>
-    </div>
-
-  </div>
-</div> --> 
 
 <section id="courses" class="section" style="display:none;">
   <!-- <h2 class="section-title">Recommended Courses</h2> -->
   <div id="courses-container" class="courses-row"></div>
 </section>
+
+
+
+
 <script src="https://www.youtube.com/iframe_api"></script>
+
+
+<script src="user_dashboard.js" defer></script>
+
 <script src="user_dashboard.js"></script>
 
 
